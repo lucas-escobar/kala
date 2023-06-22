@@ -1,0 +1,30 @@
+:root {
+  font-family: "Roboto", sans-serif;
+}
+
+html,
+body {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: ghostwhite;
+  color: slategrey;
+}
+
+#content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#clock {
+  font-size: xx-large;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kala</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i&display=swap"
+    />
+  </head>
+  <body>
+    <stoic-calendar id="calendar" birthdate="1995-06-21"></stoic-calendar>
+    <div id="content">
+      <div class="wrapper">
+        <div id="clock"></div>
+      </div>
+      <pomodoro-timer
+          pomodoro-duration="1500" break-duration="200"
+      </pomodoro-timer>
+    </div>
+
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
