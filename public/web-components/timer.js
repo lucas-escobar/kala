@@ -42,12 +42,18 @@ class PomodoroTimer extends HTMLElement {
     const minutes = Math.floor(this.currentTime / 60);
     const seconds = this.currentTime % 60;
 
-    const style = document.createElement("style");
-    style.textContent = `
-      font-size: xx-large;
-    `;
     let container = this.shadowRoot.querySelector("div");
     if (!container) {
+      const style = document.createElement("style");
+      style.textContent = `
+      :host {
+        font-size: large
+      }
+      
+      button {
+        
+      };
+      `;
       container = document.createElement("div");
       const seperator = document.createTextNode(":");
       const minutesSpan = document.createElement("span");
@@ -59,7 +65,7 @@ class PomodoroTimer extends HTMLElement {
       onOffToggleButton.textContent = "Start";
       onOffToggleButton.addEventListener("click", () => {
         this.isRunning ? this.stop() : this.start();
-      })
+      });
 
       container.appendChild(style);
       container.appendChild(minutesSpan);

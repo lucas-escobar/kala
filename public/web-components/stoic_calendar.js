@@ -3,11 +3,13 @@ import * as THREE from "../three.module.min.js";
 class StoicCalendar extends HTMLElement {
   /**
    * @param {string} birthdate - yyyy-mm-dd
-   * @param {string} color - r-g-b
    */
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+
+    this.backgroundColor = 0x696969;
+    this.drawColor = 0xf8f8ff;
 
     const styleText = `
       :host {
@@ -74,11 +76,15 @@ class StoicCalendar extends HTMLElement {
     // setup renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0xf8f8ff);
+    renderer.setClearColor(this.backgroundColor);
     if (!this.shadowRoot.querySelector("canvas")) {
       this.shadowRoot.appendChild(renderer.domElement);
     }
+    //this.inefficientCircles(scene, camera, renderer);
+    this.generateCircles(scene, camera, renderer);
+  }
 
+  inefficientCircles(scene, camera, renderer) {
     // create circles
     const circleGroup = new THREE.Group();
     scene.add(circleGroup);
@@ -91,7 +97,7 @@ class StoicCalendar extends HTMLElement {
     for (let i = 0; i < circleCount; i++) {
       const circleGeometry = new THREE.CircleGeometry(circleRadius, 32);
       const circleMaterial = new THREE.MeshBasicMaterial({
-        color: 0x696969,
+        color: this.drawColor,
         wireframe: false,
       });
       const circleMesh = new THREE.Mesh(circleGeometry, circleMaterial);
@@ -126,6 +132,76 @@ class StoicCalendar extends HTMLElement {
       renderer.render(scene, camera);
     }
 
+    animate();
+  }
+
+  generateCircles(scene, camera, renderer) {
+    const numCircles = 12;
+    const circleRadius = 0.5;
+    const groupRadius = 2;
+    const segments = 64;
+    const ndim = 2;
+
+    const circleGeometry = new THREE.CircleGeometry(circleRadius, segments);
+    const circleMaterial = new THREE.MeshBasicMaterial({
+      color: this.drawColor,
+      wireframe: true,
+    });
+    const offsets = new Float32Array(numCircles * ndim);
+    for (let i = 0; i < numCircles; i++) {
+      const angle = (2 * Math.PI * i) / numCircles;
+      const radius = circleRadius + groupRadius;
+      offsets[i * ndim] = Math.cos(angle) * radius; // x offset
+      offsets[i * ndim + 1] = Math.sin(angle) * radius; // y offset
+    }
+    circleGeometry.setAttribute(
+      "offset",
+      new THREE.InstancedBufferAttribute(offsets, ndim)
+    );
+    const instancedMesh = new THREE.InstancedMesh(
+      circleGeometry,
+      circleMaterial,
+      numCircles
+    );
+
+    scene.add(instancedMesh);
+
+    const prevTime = performance.now();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const deltaTime = (performance.now() - prevTime) / 20000;
+
+      const scale = new THREE.Vector3(1, 1, 1);
+      const radius = circleRadius + groupRadius;
+
+      for (let i = 0; i < numCircles; i++) {
+        const angle = (2 * Math.PI * i) / numCircles;
+        const position = new THREE.Vector3(
+          Math.cos(angle + deltaTime) * radius,
+          Math.sin(angle + deltaTime) * radius,
+          0
+        );
+
+        const rotation = new THREE.Quaternion().setFromAxisAngle(
+          new THREE.Vector3(0, 0, -1),
+          (deltaTime * Math.PI) / 10
+        );
+
+        const transformMatrix = new THREE.Matrix4().compose(
+          position,
+          rotation,
+          scale
+        );
+
+        instancedMesh.setMatrixAt(i, transformMatrix);
+      }
+
+      instancedMesh.instanceMatrix.needsUpdate = true;
+      renderer.render(scene, camera);
+      //prevTime = performance.now();
+    }
     animate();
   }
 }
