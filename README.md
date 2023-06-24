@@ -1,15 +1,34 @@
-# Kali
+# Kala
 
-A project designed to remind me of time. As I work, research, or study, I tend to lose track of time. This is a solution to that so I can be more mindful of my actions and efficiency.
+Kala is a website designed to help the user stay mindful of time while working or studying.
+
+Additionally, this project serves as a playground for exploring the three.js library and mathematecal/algorithmic art.
 
 ## Features
 
-- Current local time
-  - visually represent day hours of sleep, work, play
-- Pomodoro timer
-- Stoicism calendar
-- Clock ticking sound
-- Ambient sounds (singing bowls / brown noise / rain)
-- Visual representation of passing of time (metronome)
-- Standing, drinking, eating reminders
-- Mind dump / simple note taking
+- Intricate animations to indicate elapsed time
+- Various visual representations of time such as based on the hours of sunlight in the day based on the date, stoicism calendar, ect...
+- Editable pomodoro timer to assist with time management
+- Ambient audio mixer with custom ambience made with python
+- Customizable user interface
+- Health reminders (water, food, standing)
+- Scratch pad to take unrelated notes while working
+
+## Local Installation Instruction
+
+1. Clone this repository
+2. Open terminal in the project directory
+3. Bundle with `npm run dev`
+4. Start development server with `npm start`
+5. Site will be available at localhost:3000 (default)
+
+## Tools Used
+
+- Languages: html, css, javascript, python
+- API: Web components
+- Frameworks: three.js
+
+## Future Development
+
+- Deploy live on Digital Ocean
+- Implement in C++ using OpenGL and WebAssembly to test for performance improvements.
